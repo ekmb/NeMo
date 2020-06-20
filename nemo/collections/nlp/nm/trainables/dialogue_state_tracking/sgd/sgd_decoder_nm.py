@@ -249,6 +249,12 @@ class SGDDecoderNM(TrainableNM):
         self.req_slot_emb.weight.data.copy_(
             torch.from_numpy(np.stack(schema_embeddings['req_slot_emb']).reshape(num_services, -1))
         )
+        # import pdb; pdb.set_trace()
+        # nn.init.normal_(self.intents_emb.weight, mean=0.0, std=0.02)
+        # nn.init.normal_(self.cat_slot_emb.weight, mean=0.0, std=0.02)
+        # nn.init.normal_(self.cat_slot_value_emb, mean=0.0, std=0.02)
+        # nn.init.normal_(self.noncat_slot_emb.weight, mean=0.0, std=0.02)
+        # nn.init.normal_(self.req_slot_emb.weight, mean=0.0, std=0.02)
 
         if not schema_emb_processor.is_trainable:
             self.intents_emb.weight.requires_grad = False

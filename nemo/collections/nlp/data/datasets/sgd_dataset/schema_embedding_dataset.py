@@ -270,7 +270,7 @@ class SchemaEmbeddingDataset(Dataset):
         """
         completed_services = set()
         batch_size, seq_len, hidden_size = hidden_states[0].shape
-
+        logging.info(f'{mode} init mode')
         for idx in range(len(self)):
             service_id = self.features['service_id'][idx]
             service = self.schemas.get_service_from_id(service_id)
@@ -280,7 +280,7 @@ class SchemaEmbeddingDataset(Dataset):
                 completed_services.add(service)
             tensor_name = self.features["embedding_tensor_name"][idx]
             emb_mat = schema_embeddings[service_id][tensor_name]
-
+        
             if mode == 'random_token':
                 # initialize schema embeddings with random token
                 random_token = random.randint(0, seq_len - 1)
