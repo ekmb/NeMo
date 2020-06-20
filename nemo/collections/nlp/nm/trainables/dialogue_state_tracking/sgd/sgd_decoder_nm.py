@@ -256,6 +256,12 @@ class SGDDecoderNM(TrainableNM):
             self.cat_slot_value_emb.weight.requires_grad = False
             self.noncat_slot_emb.weight.requires_grad = False
             self.req_slot_emb.weight.requires_grad = False
+        else:
+            self.intents_emb.weight.requires_grad = True
+            self.cat_slot_emb.weight.requires_grad = True
+            self.cat_slot_value_emb.weight.requires_grad = True
+            self.noncat_slot_emb.weight.requires_grad = True
+            self.req_slot_emb.weight.requires_grad = True
 
         self.to(self._device)
 

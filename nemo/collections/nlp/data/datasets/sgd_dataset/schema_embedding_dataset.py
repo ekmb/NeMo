@@ -281,10 +281,14 @@ class SchemaEmbeddingDataset(Dataset):
             tensor_name = self.features["embedding_tensor_name"][idx]
             emb_mat = schema_embeddings[service_id][tensor_name]
 
-            if mode == 'random':
-                # randomly initialize schema embeddings
+            if mode == 'random_token':
+                # initialize schema embeddings with random token
                 random_token = random.randint(0, seq_len - 1)
                 embedding = [round(float(x), 6) for x in hidden_states[0][idx, random_token, :].flat]
+            elif mode == 'random_random':
+                # randomly initialize schema embeddings
+                embedding = np.random.normal(0, 0.02, hidden_states[0].shape[-1])
+                embedding = [round(float(x), 6) for x in embedding]
             elif mode == 'last_layer_average':
                 # Obtain the encoding of the [CLS] token.
                 embedding = [round(float(x), 6) for x in np.mean(hidden_states[0][idx, :], 0).flat]
