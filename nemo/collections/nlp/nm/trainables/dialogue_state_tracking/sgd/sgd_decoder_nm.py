@@ -30,6 +30,7 @@ import torch.nn.functional as F
 from nemo.backends.pytorch.nm import TrainableNM
 from nemo.core import ChannelType, EmbeddedTextType, LogitsType, NeuralType
 from nemo.utils.decorators import add_port_docs
+from nemo.utils import logging
 
 __all__ = ['SGDDecoderNM']
 
@@ -249,20 +250,24 @@ class SGDDecoderNM(TrainableNM):
         self.req_slot_emb.weight.data.copy_(
             torch.from_numpy(np.stack(schema_embeddings['req_slot_emb']).reshape(num_services, -1))
         )
-        # import pdb; pdb.set_trace()
-        # nn.init.normal_(self.intents_emb.weight, mean=0.0, std=0.02)
-        # nn.init.normal_(self.cat_slot_emb.weight, mean=0.0, std=0.02)
-        # nn.init.normal_(self.cat_slot_value_emb, mean=0.0, std=0.02)
-        # nn.init.normal_(self.noncat_slot_emb.weight, mean=0.0, std=0.02)
-        # nn.init.normal_(self.req_slot_emb.weight, mean=0.0, std=0.02)
+        
+        if schema_emb_processor.mode == 'random_random':
+            logging.info(f'{schema_emb_processor.mode} schema embeddings init')
+            nn.init.normal_(self.intents_emb.weight, mean=0.0, std=0.02)
+            nn.init.normal_(self.cat_slot_emb.weight, mean=0.0, std=0.02)
+            nn.init.normal_(self.cat_slot_value_emb.weight, mean=0.0, std=0.02)
+            nn.init.normal_(self.noncat_slot_emb.weight, mean=0.0, std=0.02)
+            nn.init.normal_(self.req_slot_emb.weight, mean=0.0, std=0.02)
 
         if not schema_emb_processor.is_trainable:
+            logging.info(f'setting requires_grad to False')
             self.intents_emb.weight.requires_grad = False
             self.cat_slot_emb.weight.requires_grad = False
             self.cat_slot_value_emb.weight.requires_grad = False
             self.noncat_slot_emb.weight.requires_grad = False
             self.req_slot_emb.weight.requires_grad = False
         else:
+            logging.info(f'setting requires_grad to True')
             self.intents_emb.weight.requires_grad = True
             self.cat_slot_emb.weight.requires_grad = True
             self.cat_slot_value_emb.weight.requires_grad = True

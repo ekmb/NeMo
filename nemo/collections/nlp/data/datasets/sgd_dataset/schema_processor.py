@@ -85,7 +85,7 @@ class SchemaPreprocessor:
         # Dimension of the embedding for intents, slots and categorical slot values in
         # Maximum allowed number of categorical trackable slots for a service.
         self.schema_config = schema_config.copy()
-
+        self.mode = mode
         self.is_trainable = is_trainable
         self.datasets = datasets
 

@@ -48,7 +48,7 @@ class AdamW(Optimizer):
         _check_valid_opt_params(lr, eps, betas)
         defaults = dict(lr=lr, betas=betas, eps=eps, weight_decay=weight_decay, amsgrad=amsgrad,)
         
-        super(AdamW, self).__init__([param for param in params if param.requires_grad == True], defaults)
+        super(AdamW, self).__init__(params, defaults)
 
     def __setstate__(self, state):
         super(AdamW, self).__setstate__(state)
